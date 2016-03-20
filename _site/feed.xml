@@ -2,13 +2,88 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Starting Machine Learning</title>
-    <description>In this blog, I will share my experiences in Machine Learning, Deep Learning and Algorithms for anyone who is new to this field.
+    <description>In this blog, I will share my experiences in Machine Learning, Deep Learning and Algorithms as a beginner.
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 Jan 2016 22:33:34 +1100</pubDate>
-    <lastBuildDate>Tue, 05 Jan 2016 22:33:34 +1100</lastBuildDate>
+    <pubDate>Sun, 20 Mar 2016 21:17:40 +1100</pubDate>
+    <lastBuildDate>Sun, 20 Mar 2016 21:17:40 +1100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
+    
+      <item>
+        <title>Feed forward Neural Networks using Tensorflow</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;These days we hear about Deep Learning everywhere from &lt;a href=&quot;https://hbr.org/2016/03/alphago-and-the-limits-of-machine-intuition&quot;&gt;AlphaGo &lt;/a&gt;defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealing &lt;a href=&quot;http://www.theverge.com/2016/2/25/11112594/google-new-deep-learning-image-location-planet&quot;&gt;PlaNet&lt;/a&gt; which can figure out the location of a photo just by looking at it. 
+The field of Deep Learning which first started in 80s continuing to 90s is now getting popularity because of the availability of powerful GPUs and huge amounts of Data. Some of the very popular Deep Learning frameworks are &lt;a href=&quot;http://caffe.berkeleyvision.org/&quot;&gt;Caffe&lt;/a&gt;, &lt;a href=&quot;https://www.tensorflow.org/&quot;&gt;Tensorflow&lt;/a&gt;, &lt;a href=&quot;http://torch.ch/&quot;&gt;Torch&lt;/a&gt; and &lt;a href=&quot;http://www.cntk.ai/&quot;&gt;CNTK&lt;/a&gt;. Each framework have their own advantages and disadvantages.&lt;/p&gt;
+
+&lt;p&gt;The very core of Deep Learning is a Neural Network which learns multiple levels of hierarchical features. In this post, we will have a look how to train a simple feed forward neural network using Tensorflow.&lt;/p&gt;
+
+&lt;h2 id=&quot;classification&quot;&gt;Classification&lt;/h2&gt;
+&lt;p&gt;Classification one of the building blocks of Machine Learning is the task of taking an input and assigning it a label. For e.g. We take several images of cats and dogs and train a model using those images. &lt;img src=&quot;/assets/Train-images.png&quot; alt=&quot;Train-images&quot; /&gt; Finally, when we input a new image to the model, it should give us the label/class of the image is Cat. &lt;img src=&quot;/assets/Test-cat.jpg&quot; alt=&quot;Test-Cat&quot; /&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;logistic-classifier&quot;&gt;Logistic Classifier&lt;/h3&gt;
+&lt;p&gt;Logistic Classifier is one of the simplest classifier. It’s a linear classifier &lt;script type=&quot;math/tex&quot;&gt;WX + b = Y&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; is the input (e.g. pixels in an image) and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are the predictions. During the training phase, we try to learn the weight matrix &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; from our training data. We want the learnt &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; are good at making predictions.&lt;/p&gt;
+
+&lt;p&gt;As we are multiplying matrices, we expect &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; to be a column matrix of real numbers. In other words, if we have 3 classes we will get a &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; with 3 rows where each row represent a score for a class. We also know each input &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; can have 1 class only. Hence to perform classification we have to turn these scores into probabilities. We want the probability of the correct class should be close to 1 and the probability of the incorrect class be close to 0. All these scores can be converted to probabilities using a SoftMax function. 
+The beauty of this function is that it can take any kind of score to proper probabilities. These scores are also called logits in the context of logistic regression.&lt;/p&gt;
+
+&lt;p&gt;The softmax function is defined as:
+&lt;script type=&quot;math/tex&quot;&gt;\sigma(y_i)=\frac{e^{y_i}}{\sum_{j}{e^{y_j}}}&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; is the number of classes.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;WX+b= \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix}&lt;/script&gt;
+
+&lt;h4 id=&quot;one-hot-encoding&quot;&gt;One Hot Encoding&lt;/h4&gt;
+&lt;p&gt;The question is now: How do we represent the label of an image mathematically? In other words, how do we tell the computer a particular matrix &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; represents a Cat or Dog or Zebra? This is doing using a column vector and its as long as the number of classes. Each row in the column vector represents a particular class. For the correct class, the vector has 1 in the row represented for that class and 0 elsewhere. For e.g. if we have 3 classes Cat, Dog and Zebra, the one-hot encoded vectors then will be:
+ &lt;script type=&quot;math/tex&quot;&gt;\begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 1\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 0\\ 1\\ \end{bmatrix}&lt;/script&gt; respectively.
+We will use these one-hot encoded vectors as labels.&lt;/p&gt;
+
+&lt;h4 id=&quot;cross-entropy&quot;&gt;Cross Entropy&lt;/h4&gt;
+&lt;p&gt;So now we have 2 sets of numbers: the first the output of the classifier i.e. &lt;script type=&quot;math/tex&quot;&gt;\sigma(WX+b)&lt;/script&gt; and the one hot-encoded vectors that correspond to our labels. To measure how well our classifier is doing, we have to measure the distance between the 2 sets of numbers. We can do that by using &lt;strong&gt;cross entropy&lt;/strong&gt;. Let’s represent the output of the classifier is &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; and labels as &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;. 
+The distance is represented as:
+&lt;script type=&quot;math/tex&quot;&gt;D(S,L) = -\sum_{i}L_i.log(S_i)&lt;/script&gt;. We do not want the one-hot encoded labels under the &lt;script type=&quot;math/tex&quot;&gt;log&lt;/script&gt; as they contain zeros.&lt;/p&gt;
+
+&lt;p&gt;To summarise:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt; We have an input X &lt;/li&gt;
+&lt;li&gt; We turn X into logits using a linear model&lt;/li&gt;
+&lt;li&gt; We then feed the logits into a softmax function and turn them into probabilities&lt;/li&gt;
+&lt;li&gt; Finally we compare the probabilities with the one-hot encoded labels using the cross entropy function.&lt;/li&gt;
+$$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix} \xrightarrow[Cross-Entropy]{D(S,L)} \begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}$$
+&lt;/ol&gt;
+
+&lt;p&gt;The above 4 settings is called &lt;strong&gt;Multinomial Logistic Classification&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;learning-w-and-b&quot;&gt;Learning &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt;&lt;/h4&gt;
+&lt;p&gt;The next step is to learn &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; from our training data. In other words, we need a &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; that has low distance for the correct class but have a high distance from an incorrect class. We can measure the distance averaged over for all our entire training set and we call it the &lt;strong&gt;training loss&lt;/strong&gt;. In other words, loss = average cross entropy and it is a function of weights &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; and biases &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt;.
+&lt;script type=&quot;math/tex&quot;&gt;L = \frac{1}{n}\sum_{i}D(S(WX_i+b), L_i)&lt;/script&gt;. We want this loss to be as small as possible and hence during training we want to minimize this loss function &lt;script type=&quot;math/tex&quot;&gt;(L)&lt;/script&gt;. Hence our problem has become a numerical optimisation problem. In other words, we try to find the weights that cause the loss to be smallest.&lt;/p&gt;
+
+&lt;p&gt;There are several ways to achieve this minimisation. The simplest way is &lt;strong&gt;gradient descent&lt;/strong&gt;. In gradient descent, we take the derivative of the loss with respect to the parameters and follow the derivative by taking a step backwards and repeat till we reach the bottom. In the diagram below, the loss is a function of 1 parameter &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; only. In real world problems, it will have a millions of parameters.
+&lt;img src=&quot;/assets/Gradient-Descent.png&quot; alt=&quot;Gradient-Descent&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;preprocessing-input-and-initialising-weights&quot;&gt;Preprocessing Input and Initialising Weights&lt;/h4&gt;
+&lt;p&gt;Before we feed our training data to the classifier, if possible we would like the data to have zero mean and unit variance. We do this to help the optimiser to find the optimal solution quickly. In other words, in a badly conditioned problem the optimiser will have to do lots of searching to find the optimal solution. To achieve this in case of images, we subtract each pixel value by 128 and then divide it by 128.&lt;/p&gt;
+
+&lt;p&gt;To intialise the weights, we simply randomly draw numbers from a gaussian distribution with zero mean and a small &lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;. We do this because, if we have large &lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;, the model will be very confident in its prediction. We don’t want that initially, instead we want our model to gain confidence as the training progresses, hence we choose a small value for &lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, the optimisation looks like:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;W \leftarrow W-\alpha\Delta_w L&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;b \leftarrow b-\alpha\Delta_b L&lt;/script&gt;
+
+&lt;p&gt;We repeat the above 2 steps until we reach the minimum of the loss function.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 19 Mar 2016 11:00:00 +1100</pubDate>
+        <link>/deep/learning/2016/03/19/Feed-Forward-Neural-Network-using-Tensorflow.html</link>
+        <guid isPermaLink="true">/deep/learning/2016/03/19/Feed-Forward-Neural-Network-using-Tensorflow.html</guid>
+        
+        
+        <category>Deep</category>
+        
+        <category>Learning</category>
+        
+      </item>
     
       <item>
         <title>Welcome to Jekyll!</title>
@@ -35,27 +110,6 @@
         <category>jekyll</category>
         
         <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>Texture and Materials Classification using Deep Neural Networks</title>
-        <description>&lt;p&gt;In this post, I will share my experience as a Deep Learning researcher beginner while I am working as a Research Assistant at NICTA (National ICT Australia) under Dr. Cong Phuoc Hyunh to classify Textures and Materials from images.&lt;/p&gt;
-
-&lt;h2 id=&quot;data&quot;&gt;Data&lt;/h2&gt;
-&lt;p&gt;As machine learning is a data driven approach, we hence need data. There are quite a few materials and textures dataset and we use namely &lt;a href=&quot;http://www.robots.ox.ac.uk/~vgg/data/dtd/&quot;&gt;Descibable Textures Dataset (DTD)&lt;/a&gt;, &lt;a href=&quot;http://people.csail.mit.edu/celiu/CVPR2010/FMD/&quot;&gt;Flickr Materials Database (FMD)&lt;/a&gt; and &lt;a href=&quot;http://opensurfaces.cs.cornell.edu/publications/minc/&quot;&gt;Materials in Context Database (MINC)&lt;/a&gt;. DTD, FMD and MINC have 47, 10 and 23 classes respectively. DTD has 120x47=5640 images, FMD has 100x10=1000 images and MINC has 2996674 patches. DTD and FMD has equal number of images per class while MINC all classes have different number of images. For instance, Wood has over half a million patches, while Wallpaper has just over 14000 images.&lt;/p&gt;
-
-&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
-&lt;p&gt;It is often said more data beats better algorithms. Hence, deep learning is able to exploit lots of data to reveal patterns in the data. Hence to take advantage of this massive amount of data, we need parallel GPU computing. In our case, we used a Tesla K40 and GTX 980 GPU which have 12 GB and 4 GB VRAM respectively.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 01 Jan 2016 21:41:18 +1100</pubDate>
-        <link>/deep/learning/2016/01/01/Texture-and-Pattern-Classification.html</link>
-        <guid isPermaLink="true">/deep/learning/2016/01/01/Texture-and-Pattern-Classification.html</guid>
-        
-        
-        <category>Deep</category>
-        
-        <category>Learning</category>
         
       </item>
     

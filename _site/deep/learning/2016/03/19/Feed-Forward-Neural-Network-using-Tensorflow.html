@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Feed forward Neural Networks using Tensorflow</title>
+  <meta name="description" content="IntroductionThese days we hear about Deep Learning everywhere from AlphaGo defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealin...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="/deep/learning/2016/03/19/Feed-Forward-Neural-Network-using-Tensorflow.html">
+  <link rel="alternate" type="application/rss+xml" title="Starting Machine Learning" href="/feed.xml">
+</head>
+
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Starting Machine Learning</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Feed forward Neural Networks using Tensorflow</h1>
+    <p class="post-meta"><time datetime="2016-03-19T11:00:00+11:00" itemprop="datePublished">Mar 19, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+<p>These days we hear about Deep Learning everywhere from <a href="https://hbr.org/2016/03/alphago-and-the-limits-of-machine-intuition">AlphaGo </a>defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealing <a href="http://www.theverge.com/2016/2/25/11112594/google-new-deep-learning-image-location-planet">PlaNet</a> which can figure out the location of a photo just by looking at it. 
+The field of Deep Learning which first started in 80s continuing to 90s is now getting popularity because of the availability of powerful GPUs and huge amounts of Data. Some of the very popular Deep Learning frameworks are <a href="http://caffe.berkeleyvision.org/">Caffe</a>, <a href="https://www.tensorflow.org/">Tensorflow</a>, <a href="http://torch.ch/">Torch</a> and <a href="http://www.cntk.ai/">CNTK</a>. Each framework have their own advantages and disadvantages.</p>
+
+<p>The very core of Deep Learning is a Neural Network which learns multiple levels of hierarchical features. In this post, we will have a look how to train a simple feed forward neural network using Tensorflow.</p>
+
+<h2 id="classification">Classification</h2>
+<p>Classification one of the building blocks of Machine Learning is the task of taking an input and assigning it a label. For e.g. We take several images of cats and dogs and train a model using those images. <img src="/assets/Train-images.png" alt="Train-images" /> Finally, when we input a new image to the model, it should give us the label/class of the image is Cat. <img src="/assets/Test-cat.jpg" alt="Test-Cat" />.</p>
+
+<h3 id="logistic-classifier">Logistic Classifier</h3>
+<p>Logistic Classifier is one of the simplest classifier. It’s a linear classifier <script type="math/tex">WX + b = Y</script> where <script type="math/tex">X</script> is the input (e.g. pixels in an image) and <script type="math/tex">Y</script> are the predictions. During the training phase, we try to learn the weight matrix <script type="math/tex">W</script> and bias <script type="math/tex">b</script> from our training data. We want the learnt <script type="math/tex">W</script> and bias <script type="math/tex">b</script> are good at making predictions.</p>
+
+<p>As we are multiplying matrices, we expect <script type="math/tex">Y</script> to be a column matrix of real numbers. In other words, if we have 3 classes we will get a <script type="math/tex">Y</script> with 3 rows where each row represent a score for a class. We also know each input <script type="math/tex">X</script> can have 1 class only. Hence to perform classification we have to turn these scores into probabilities. We want the probability of the correct class should be close to 1 and the probability of the incorrect class be close to 0. All these scores can be converted to probabilities using a SoftMax function. 
+The beauty of this function is that it can take any kind of score to proper probabilities. These scores are also called logits in the context of logistic regression.</p>
+
+<p>The softmax function is defined as:
+<script type="math/tex">\sigma(y_i)=\frac{e^{y_i}}{\sum_{j}{e^{y_j}}}</script> where <script type="math/tex">j</script> is the number of classes.</p>
+
+<script type="math/tex; mode=display">WX+b= \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix}</script>
+
+<h4 id="one-hot-encoding">One Hot Encoding</h4>
+<p>The question is now: How do we represent the label of an image mathematically? In other words, how do we tell the computer a particular matrix <script type="math/tex">X</script> represents a Cat or Dog or Zebra? This is doing using a column vector and its as long as the number of classes. Each row in the column vector represents a particular class. For the correct class, the vector has 1 in the row represented for that class and 0 elsewhere. For e.g. if we have 3 classes Cat, Dog and Zebra, the one-hot encoded vectors then will be:
+ <script type="math/tex">\begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 1\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 0\\ 1\\ \end{bmatrix}</script> respectively.
+We will use these one-hot encoded vectors as labels.</p>
+
+<h4 id="cross-entropy">Cross Entropy</h4>
+<p>So now we have 2 sets of numbers: the first the output of the classifier i.e. <script type="math/tex">\sigma(WX+b)</script> and the one hot-encoded vectors that correspond to our labels. To measure how well our classifier is doing, we have to measure the distance between the 2 sets of numbers. We can do that by using <strong>cross entropy</strong>. Let’s represent the output of the classifier is <script type="math/tex">S</script> and labels as <script type="math/tex">L</script>. 
+The distance is represented as:
+<script type="math/tex">D(S,L) = -\sum_{i}L_i.log(S_i)</script>. We do not want the one-hot encoded labels under the <script type="math/tex">log</script> as they contain zeros.</p>
+
+<p>To summarise:</p>
+<ol>
+<li> We have an input X </li>
+<li> We turn X into logits using a linear model</li>
+<li> We then feed the logits into a softmax function and turn them into probabilities</li>
+<li> Finally we compare the probabilities with the one-hot encoded labels using the cross entropy function.</li>
+$$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix} \xrightarrow[Cross-Entropy]{D(S,L)} \begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}$$
+</ol>
+
+<p>The above 4 settings is called <strong>Multinomial Logistic Classification</strong>.</p>
+
+<h4 id="learning-w-and-b">Learning <script type="math/tex">W</script> and <script type="math/tex">b</script></h4>
+<p>The next step is to learn <script type="math/tex">W</script> and <script type="math/tex">b</script> from our training data. In other words, we need a <script type="math/tex">W</script> and <script type="math/tex">b</script> that has low distance for the correct class but have a high distance from an incorrect class. We can measure the distance averaged over for all our entire training set and we call it the <strong>training loss</strong>. In other words, loss = average cross entropy and it is a function of weights <script type="math/tex">W</script> and biases <script type="math/tex">b</script>.
+<script type="math/tex">L = \frac{1}{n}\sum_{i}D(S(WX_i+b), L_i)</script>. We want this loss to be as small as possible and hence during training we want to minimize this loss function <script type="math/tex">(L)</script>. Hence our problem has become a numerical optimisation problem. In other words, we try to find the weights that cause the loss to be smallest.</p>
+
+<p>There are several ways to achieve this minimisation. The simplest way is <strong>gradient descent</strong>. In gradient descent, we take the derivative of the loss with respect to the parameters and follow the derivative by taking a step backwards and repeat till we reach the bottom. In the diagram below, the loss is a function of 1 parameter <script type="math/tex">W</script> only. In real world problems, it will have a millions of parameters.
+<img src="/assets/Gradient-Descent.png" alt="Gradient-Descent" /></p>
+
+<h4 id="preprocessing-input-and-initialising-weights">Preprocessing Input and Initialising Weights</h4>
+<p>Before we feed our training data to the classifier, if possible we would like the data to have zero mean and unit variance. We do this to help the optimiser to find the optimal solution quickly. In other words, in a badly conditioned problem the optimiser will have to do lots of searching to find the optimal solution. To achieve this in case of images, we subtract each pixel value by 128 and then divide it by 128.</p>
+
+<p>To intialise the weights, we simply randomly draw numbers from a gaussian distribution with zero mean and a small <script type="math/tex">\sigma</script>. We do this because, if we have large <script type="math/tex">\sigma</script>, the model will be very confident in its prediction. We don’t want that initially, instead we want our model to gain confidence as the training progresses, hence we choose a small value for <script type="math/tex">\sigma</script>.</p>
+
+<p>Finally, the optimisation looks like:</p>
+
+<script type="math/tex; mode=display">W \leftarrow W-\alpha\Delta_w L</script>
+
+<script type="math/tex; mode=display">b \leftarrow b-\alpha\Delta_b L</script>
+
+<p>We repeat the above 2 steps until we reach the minimum of the loss function.</p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Starting Machine Learning</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Starting Machine Learning</li>
+          <li><a href="mailto:manab.chetia@outlook.com">manab.chetia@outlook.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/manmax31"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">manmax31</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>In this blog, I will share my experiences in Machine Learning, Deep Learning and Algorithms as a beginner.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

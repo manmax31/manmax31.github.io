@@ -9,10 +9,12 @@
 title: Starting Machine Learning
 email: manab.chetia@outlook.com
 description: > # this means to ignore newlines until "baseurl:"
-  In this blog, I will share my experiences in Machine Learning, Deep Learning and Algorithms for anyone who is new to this field.
+  In this blog, I will share my experiences in Machine Learning, Deep Learning and Algorithms as a beginner.
 baseurl: "" # the subpath of your site, e.g. /blog
 github_username:  manmax31
 linkedin_username: manabchetia
 
 # Build settings
 markdown: kramdown
+
+
