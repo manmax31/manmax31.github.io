@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Neural Networks using Tensorflow (Part 1: Logistic Classifier)</title>
-  <meta name="description" content="IntroductionThese days we hear about Deep Learning everywhere from AlphaGo defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealin...">
+  <meta name="description" content="IntroductionThese days we hear about Deep Learning everywhere, from AlphaGo defeating 9-dan ranked Lee Sedol in a game of Go 4 out of 5 times, to Google reve...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="/deep/learning/2016/03/19/Neural-Network-using-Tensorflow.html">
@@ -65,19 +65,19 @@
 
   <div class="post-content" itemprop="articleBody">
     <h2 id="introduction">Introduction</h2>
-<p>These days we hear about Deep Learning everywhere from <a href="https://hbr.org/2016/03/alphago-and-the-limits-of-machine-intuition">AlphaGo </a>defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealing <a href="http://www.theverge.com/2016/2/25/11112594/google-new-deep-learning-image-location-planet">PlaNet</a> which can figure out the location of a photo just by looking at it. 
-The field of Deep Learning which first started in 80s continuing to 90s is now getting popularity because of the availability of powerful GPUs and huge amounts of Data. Some of the very popular Deep Learning frameworks are <a href="http://caffe.berkeleyvision.org/">Caffe</a>, <a href="https://www.tensorflow.org/">Tensorflow</a>, <a href="http://torch.ch/">Torch</a> and <a href="http://www.cntk.ai/">CNTK</a>. Each framework have their own advantages and disadvantages.</p>
+<p>These days we hear about Deep Learning everywhere, from <a href="https://hbr.org/2016/03/alphago-and-the-limits-of-machine-intuition">AlphaGo </a>defeating 9-dan ranked Lee Sedol in a game of Go 4 out of 5 times, to Google revealing <a href="http://www.theverge.com/2016/2/25/11112594/google-new-deep-learning-image-location-planet">PlaNet</a> that can figure out a photo’s location simply by looking at it. 
+The field of Deep Learning, which first started in the 80s and continued into the 90s is now gaining popularity because of the availability of powerful GPUs and huge amounts of Data. Some of the very popular Deep Learning frameworks are <a href="http://caffe.berkeleyvision.org/">Caffe</a>, <a href="https://www.tensorflow.org/">Tensorflow</a>, <a href="http://torch.ch/">Torch</a> and <a href="http://www.cntk.ai/">CNTK</a>. Each framework has its own advantages and disadvantages.</p>
 
-<p>The very core of Deep Learning is a Neural Network which learns multiple levels of hierarchical features. In this post, we will have a look how to train a simple feed forward neural network using Tensorflow.</p>
+<p>The essential core of Deep Learning is a Neural Network that learns multiple levels of hierarchical features. Before we dive into neural networks, we will look at a simple logistic classifier. This will be the focus of the current post.</p>
 
 <h2 id="classification">Classification</h2>
-<p>Classification one of the building blocks of Machine Learning is the task of taking an input and assigning it a label. For e.g. We take several images of cats and dogs and train a model using those images. <img src="/assets/Train-images.png" alt="Train-images" /> Finally, when we input a new image to the model, it should give us the label/class of the image is Cat. <img src="/assets/Test-cat.jpg" alt="Test-Cat" />.</p>
+<p>Classification, one of the building blocks of Machine Learning, is the task of taking an input and assigning it a label. For example, we can take several images of cats and dogs and train a model using those images. <img src="/assets/Train-images.png" alt="Train-images" /> Finally, when we input a new image into the model, it should tell us that the label/class of the image is Cat. <img src="/assets/Test-cat.jpg" alt="Test-Cat" />.</p>
 
 <h3 id="logistic-classifier">Logistic Classifier</h3>
-<p>Logistic Classifier is one of the simplest classifier. It’s a linear classifier <script type="math/tex">WX + b = Y</script> where <script type="math/tex">X</script> is the input (e.g. pixels in an image) and <script type="math/tex">Y</script> are the predictions. During the training phase, we try to learn the weight matrix <script type="math/tex">W</script> and bias <script type="math/tex">b</script> from our training data. We want the learnt <script type="math/tex">W</script> and bias <script type="math/tex">b</script> are good at making predictions.</p>
+<p>Logistic Classifier is one of the simplest classifiers. It is a linear classifier <script type="math/tex">WX + b = Y</script> where <script type="math/tex">X</script> is the input (e.g. pixels in an image) and <script type="math/tex">Y</script> are the predictions. During the training phase, we try to learn the weight matrix <script type="math/tex">W</script> and bias <script type="math/tex">b</script> from our training data. We want the learnt <script type="math/tex">W</script> and bias <script type="math/tex">b</script> to be good at making predictions.</p>
 
-<p>As we are multiplying matrices, we expect <script type="math/tex">Y</script> to be a column matrix of real numbers. In other words, if we have 3 classes we will get a <script type="math/tex">Y</script> with 3 rows where each row represent a score for a class. We also know each input <script type="math/tex">X</script> can have 1 class only. Hence to perform classification we have to turn these scores into probabilities. We want the probability of the correct class should be close to 1 and the probability of the incorrect class be close to 0. All these scores can be converted to probabilities using a SoftMax function. 
-The beauty of this function is that it can take any kind of score to proper probabilities. These scores are also called logits in the context of logistic regression.</p>
+<p>As we are multiplying matrices, we expect <script type="math/tex">Y</script> to be a column matrix of real numbers. In other words, if we have 3 classes we will get a <script type="math/tex">Y</script> with 3 rows where each row represents a score for a class. We also know each input <script type="math/tex">X</script> can have 1 class only. Hence, to perform classification, we have to convert these scores into probabilities. We want the probability of the correct class to be close to 1 and the probability of the incorrect class be close to 0. All these scores can be converted to probabilities using a SoftMax function. 
+The beauty of this function is that it can convert any kind of scores to proper probabilities. These scores are also called logits in the context of logistic regression.</p>
 
 <p>The softmax function is defined as:
 <script type="math/tex">\sigma(y_i)=\frac{e^{y_i}}{\sum_{j}{e^{y_j}}}</script> where <script type="math/tex">j</script> is the number of classes.</p>
@@ -85,37 +85,37 @@ The beauty of this function is that it can take any kind of score to proper prob
 <script type="math/tex; mode=display">WX+b= \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix}</script>
 
 <h4 id="one-hot-encoding">One Hot Encoding</h4>
-<p>The question is now: How do we represent the label of an image mathematically? In other words, how do we tell the computer a particular matrix <script type="math/tex">X</script> represents a Cat or Dog or Zebra? This is doing using a column vector and its as long as the number of classes. Each row in the column vector represents a particular class. For the correct class, the vector has 1 in the row represented for that class and 0 elsewhere. For e.g. if we have 3 classes Cat, Dog and Zebra, the one-hot encoded vectors then will be:
+<p>The question is now: How do we represent the label of an image mathematically? In other words, how do we tell the computer that a particular matrix <script type="math/tex">X</script> represents a Cat, Dog or Zebra? This is done using a column vector and it is as long as the number of classes. Each row in the column vector represents a particular class. For the correct class, the vector has 1 in the row represented for that class and 0 elsewhere. For example, if we have 3 classes, Cat, Dog and Zebra, the one-hot encoded vectors then will be:
  <script type="math/tex">\begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 1\\ 0\\ \end{bmatrix}, \begin{bmatrix} 0\\ 0\\ 1\\ \end{bmatrix}</script> respectively.
 We will use these one-hot encoded vectors as labels.</p>
 
 <h4 id="cross-entropy">Cross Entropy</h4>
-<p>So now we have 2 sets of numbers: the first the output of the classifier i.e. <script type="math/tex">\sigma(WX+b)</script> and the one hot-encoded vectors that correspond to our labels. To measure how well our classifier is doing, we have to measure the distance between the 2 sets of numbers. We can do that by using <strong>cross entropy</strong>. Let’s represent the output of the classifier is <script type="math/tex">S</script> and labels as <script type="math/tex">L</script>. 
+<p>So now we have 2 sets of numbers: the first is the output of the classifier (i.e. <script type="math/tex">\sigma(WX+b)</script>) and the one hot-encoded vectors that correspond to our labels. To measure how well our classifier is doing, we have to measure the distance between the 2 sets of numbers. We can do that by using <strong>cross entropy</strong>. Let’s represent the output of the classifier as <script type="math/tex">S</script> and labels as <script type="math/tex">L</script>. 
 The distance is represented as:
-<script type="math/tex">D(S,L) = -\sum_{i}L_i.log(S_i)</script>. We do not want the one-hot encoded labels under the <script type="math/tex">log</script> as they contain zeros.</p>
+<script type="math/tex">D(S,L) = -\sum_{i}L_i.log(S_i)</script>. We do not want the one-hot encoded labels to be under the <script type="math/tex">log</script> as they contain zeros.</p>
 
 <p>To summarise:</p>
 <ol>
 <li> We have an input X </li>
 <li> We turn X into logits using a linear model</li>
 <li> We then feed the logits into a softmax function and turn them into probabilities</li>
-<li> Finally we compare the probabilities with the one-hot encoded labels using the cross entropy function.</li>
+<li> Finally, we compare the probabilities with the one-hot encoded labels using the cross entropy function.</li>
 $$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{softmax} \begin{bmatrix} 0.7\\ 0.2\\ 0.1\\ \end{bmatrix} \xrightarrow[Cross-Entropy]{D(S,L)} \begin{bmatrix} 1\\ 0\\ 0\\ \end{bmatrix}$$
 </ol>
 
-<p>The above 4 settings is called <strong>Multinomial Logistic Classification</strong>.</p>
+<p>The above 4 settings are called <strong>Multinomial Logistic Classification</strong>.</p>
 
 <h4 id="learning-w-and-b">Learning <script type="math/tex">W</script> and <script type="math/tex">b</script></h4>
-<p>The next step is to learn <script type="math/tex">W</script> and <script type="math/tex">b</script> from our training data. In other words, we need a <script type="math/tex">W</script> and <script type="math/tex">b</script> that has low distance for the correct class but have a high distance from an incorrect class. We can measure the distance averaged over for all our entire training set and we call it the <strong>training loss</strong>. In other words, loss = average cross entropy and it is a function of weights <script type="math/tex">W</script> and biases <script type="math/tex">b</script>.
+<p>The next step is to learn <script type="math/tex">W</script> and <script type="math/tex">b</script> from our training data. In other words, we need a <script type="math/tex">W</script> and <script type="math/tex">b</script> that has low distance for the correct class but a high distance from an incorrect class. We can measure the distance averaged over our entire training set and we call it the <strong>training loss</strong>. In other words, loss = average cross entropy and it is a function of weights <script type="math/tex">W</script> and biases <script type="math/tex">b</script>.
 <script type="math/tex">L = \frac{1}{n}\sum_{i}D(S(WX_i+b), L_i)</script>. We want this loss to be as small as possible and hence during training we want to minimize this loss function <script type="math/tex">(L)</script>. Hence our problem has become a numerical optimisation problem. In other words, we try to find the weights that cause the loss to be smallest.</p>
 
-<p>There are several ways to achieve this minimisation. The simplest way is <strong>gradient descent</strong>. In gradient descent, we take the derivative of the loss with respect to the parameters and follow the derivative by taking a step backwards and repeat till we reach the bottom. In the diagram below, the loss is a function of 1 parameter <script type="math/tex">W</script> only. In real world problems, it will have a millions of parameters.
+<p>There are several ways to achieve this minimisation. The simplest way is <strong>gradient descent</strong>. In gradient descent, we take the derivative of the loss with respect to the parameters and follow the derivative by taking a step backwards and repeating until we reach the bottom. In the diagram below, the loss is a function of 1 parameter <script type="math/tex">W</script> only. In real world problems, it will have millions of parameters.
 <img src="/assets/Gradient-Descent.png" alt="Gradient-Descent" /></p>
 
 <h4 id="preprocessing-input-and-initialising-weights">Preprocessing Input and Initialising Weights</h4>
-<p>Before we feed our training data to the classifier, if possible we would like the data to have zero mean and unit variance. We do this to help the optimiser to find the optimal solution quickly. In other words, in a badly conditioned problem the optimiser will have to do lots of searching to find the optimal solution. To achieve this in case of images, we subtract each pixel value by 128 and then divide it by 128.</p>
+<p>Before we feed our training data into the classifier, if possible we would like the data to have zero mean and unit variance. We do this to help the optimiser find the optimal solution quickly. In other words, in a badly conditioned problem, the optimiser will have to do lots of searching to find the optimal solution. To achieve this in the case of images, we subtract each pixel value by 128 and then divide it by 128.</p>
 
-<p>To intialise the weights, we simply randomly draw numbers from a gaussian distribution with zero mean and a small <script type="math/tex">\sigma</script>. We do this because, if we have large <script type="math/tex">\sigma</script>, the model will be very confident in its prediction. We don’t want that initially, instead we want our model to gain confidence as the training progresses, hence we choose a small value for <script type="math/tex">\sigma</script>.</p>
+<p>To intialise the weights, we simply randomly draw numbers from a gaussian distribution with zero mean and a small <script type="math/tex">\sigma</script>. We do this because, if we have large <script type="math/tex">\sigma</script>, the model will be very confident in its prediction. We don’t want that initially. Instead we want our model to gain confidence as the training progresses, hence we choose a small value for <script type="math/tex">\sigma</script>.</p>
 
 <p>Finally, the optimisation looks like:</p>
 
@@ -124,6 +124,177 @@ $$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{
 <script type="math/tex; mode=display">b \leftarrow b-\alpha\Delta_b L</script>
 
 <p>We repeat the above 2 steps until we reach the minimum loss.</p>
+
+<h2 id="code">Code</h2>
+<p>In this part, we will look into how we apply the same in <a href="http://scikit-learn.org/">scikit-learn</a>  and will use the data <a href="'http://yaroslavvb.com/upload/notMNIST/'">noMNIST</a> dataset. This dataset contains characters in various fonts with <script type="math/tex">28\times28</script> features.</p>
+
+<p>First we import the libraries,</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span></code></pre></figure>
+
+<p>Next we download and extract the dataset,</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">url</span> <span class="o">=</span> <span class="s">'http://yaroslavvb.com/upload/notMNIST/'</span>
+
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">expected_bytes</span><span class="p">):</span>
+  <span class="s">"""Download a file if not present"""</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">filename</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+  <span class="n">statinfo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">statinfo</span><span class="o">.</span><span class="n">st_size</span> <span class="o">==</span> <span class="n">expected_bytes</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'Found and verified'</span><span class="p">,</span> <span class="n">filename</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span>
+      <span class="s">'Failed to verify'</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">'. Can you get to it with a browser?'</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">filename</span>
+
+<span class="n">train_filename</span> <span class="o">=</span> <span class="n">download</span><span class="p">(</span><span class="s">'notMNIST_large.tar.gz'</span><span class="p">,</span> <span class="mi">247336696</span><span class="p">)</span>
+<span class="n">test_filename</span> <span class="o">=</span> <span class="n">download</span><span class="p">(</span><span class="s">'notMNIST_small.tar.gz'</span><span class="p">,</span> <span class="mi">8458043</span><span class="p">)</span>
+
+
+<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+  <span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+  <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">()</span>
+  <span class="n">tar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>  <span class="c"># remove .tar.gz</span>
+  <span class="n">data_folders</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">root</span><span class="p">))]</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_folders</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_classes</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span>
+      <span class="s">'Expected </span><span class="si">%</span><span class="s">d folders, one per class. Found </span><span class="si">%</span><span class="s">d instead.'</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">num_folders</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_folders</span><span class="p">)))</span>
+  <span class="k">print</span> <span class="n">data_folders</span>
+  <span class="k">return</span> <span class="n">data_folders</span>
+  
+<span class="n">train_folders</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">train_filename</span><span class="p">)</span>
+<span class="n">test_folders</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">test_filename</span><span class="p">)</span></code></pre></figure>
+
+<p>Now, we load the data into a 3D array (index, height, width) and create a training set and a test set.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">image_size</span> <span class="o">=</span> <span class="mi">28</span>  <span class="c"># Pixel width and height.</span>
+<span class="n">pixel_depth</span> <span class="o">=</span> <span class="mf">255.0</span>  <span class="c"># Number of levels per pixel.</span>
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">data_folders</span><span class="p">,</span> <span class="n">min_num_images</span><span class="p">,</span> <span class="n">max_num_images</span><span class="p">):</span>
+  <span class="n">dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">max_num_images</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">max_num_images</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+  <span class="n">label_index</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">image_index</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">data_folders</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">folder</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">image_index</span> <span class="o">&gt;=</span> <span class="n">max_num_images</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'More images than expected: </span><span class="si">%</span><span class="s">d &gt;= </span><span class="si">%</span><span class="s">d'</span> <span class="o">%</span> <span class="p">(</span>
+          <span class="n">num_images</span><span class="p">,</span> <span class="n">max_num_images</span><span class="p">))</span>
+      <span class="n">image_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">image_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ndimage</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image_file</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">-</span>
+                      <span class="n">pixel_depth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">pixel_depth</span>
+        <span class="k">if</span> <span class="n">image_data</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">):</span>
+          <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'Unexpected image shape: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="n">image_index</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">image_data</span>
+        <span class="n">labels</span><span class="p">[</span><span class="n">image_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_index</span>
+        <span class="n">image_index</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">'Could not read:'</span><span class="p">,</span> <span class="n">image_file</span><span class="p">,</span> <span class="s">':'</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="s">'- it</span><span class="se">\'</span><span class="s">s ok, skipping.'</span>
+    <span class="n">label_index</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="n">num_images</span> <span class="o">=</span> <span class="n">image_index</span>
+  <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_images</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_images</span><span class="p">]</span>
+  <span class="k">if</span> <span class="n">num_images</span> <span class="o">&lt;</span> <span class="n">min_num_images</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'Many fewer images than expected: </span><span class="si">%</span><span class="s">d &lt; </span><span class="si">%</span><span class="s">d'</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">num_images</span><span class="p">,</span> <span class="n">min_num_images</span><span class="p">))</span>
+  <span class="k">print</span> <span class="s">'Full dataset tensor:'</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span>
+  <span class="k">print</span> <span class="s">'Mean:'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+  <span class="k">print</span> <span class="s">'Standard deviation:'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+  <span class="k">print</span> <span class="s">'Labels:'</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span>
+  <span class="k">return</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">labels</span>
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">train_labels</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">train_folders</span><span class="p">,</span> <span class="mi">450000</span><span class="p">,</span> <span class="mi">550000</span><span class="p">)</span>
+<span class="n">test_dataset</span><span class="p">,</span> <span class="n">test_labels</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">test_folders</span><span class="p">,</span> <span class="mi">18000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">)</span></code></pre></figure>
+
+<p>Next we display the images,</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">a</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/A/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/B/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/C/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/D/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/E/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/F/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/G/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/H/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/I/aGFua28udHRm.png'</span><span class="p">)</span>
+<span class="n">j</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">'notMNIST_large/J/aGFua28udHRm.png'</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/Characters.png" alt="Characters" /></p>
+
+<p>It is very important to randomise the dataset so that our model during training does not get biased towards a particular label. We do this as:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+  <span class="n">permutation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">shuffled_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">permutation</span><span class="p">,:,:]</span>
+  <span class="n">shuffled_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">permutation</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">shuffled_dataset</span><span class="p">,</span> <span class="n">shuffled_labels</span>
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">train_labels</span> <span class="o">=</span> <span class="n">randomize</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">)</span>
+<span class="n">test_dataset</span><span class="p">,</span> <span class="n">test_labels</span> <span class="o">=</span> <span class="n">randomize</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)</span></code></pre></figure>
+
+<p>Now we separate our training set into 2 set: <code class="highlighter-rouge">train set</code>, <code class="highlighter-rouge">validation set</code>. We use the validation set for hyper-parameter tuning.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">train_size</span> <span class="o">=</span> <span class="mi">200000</span>
+<span class="n">valid_size</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">valid_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="p">[:</span><span class="n">valid_size</span><span class="p">,:,:]</span>
+<span class="n">valid_labels</span> <span class="o">=</span> <span class="n">train_labels</span><span class="p">[:</span><span class="n">valid_size</span><span class="p">]</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="p">[</span><span class="n">valid_size</span><span class="p">:</span><span class="n">valid_size</span><span class="o">+</span><span class="n">train_size</span><span class="p">,:,:]</span>
+<span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_labels</span><span class="p">[</span><span class="n">valid_size</span><span class="p">:</span><span class="n">valid_size</span><span class="o">+</span><span class="n">train_size</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">'Training'</span><span class="p">,</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">train_labels</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">print</span> <span class="s">'Validation'</span><span class="p">,</span> <span class="n">valid_dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">valid_labels</span><span class="o">.</span><span class="n">shape</span></code></pre></figure>
+
+<p>We save this model on a disk for re-use later.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pickle_file</span> <span class="o">=</span> <span class="s">'notMNIST.pickle'</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickle_file</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
+  <span class="n">save</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'train_dataset'</span><span class="p">:</span> <span class="n">train_dataset</span><span class="p">,</span>
+    <span class="s">'train_labels'</span><span class="p">:</span> <span class="n">train_labels</span><span class="p">,</span>
+    <span class="s">'valid_dataset'</span><span class="p">:</span> <span class="n">valid_dataset</span><span class="p">,</span>
+    <span class="s">'valid_labels'</span><span class="p">:</span> <span class="n">valid_labels</span><span class="p">,</span>
+    <span class="s">'test_dataset'</span><span class="p">:</span> <span class="n">test_dataset</span><span class="p">,</span>
+    <span class="s">'test_labels'</span><span class="p">:</span> <span class="n">test_labels</span><span class="p">,</span>
+    <span class="p">}</span>
+  <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">save</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s">'Unable to save data to'</span><span class="p">,</span> <span class="n">pickle_file</span><span class="p">,</span> <span class="s">':'</span><span class="p">,</span> <span class="n">e</span>
+  <span class="k">raise</span></code></pre></figure>
+
+<p>Now comes the training phase. We are going to use <a href="http://scikit-learn.org/">scikit-learn</a> to train our model.
+<code class="highlighter-rouge">scikit-learn</code> takes in data as a <code class="highlighter-rouge">2D</code> array only (i.e. <code class="highlighter-rouge">(n_samples, n_features)</code>). On the other hand, our dataset is a <code class="highlighter-rouge">3D</code> array <code class="highlighter-rouge">(n_samples, height, width)</code>. Hence, we are going to flatten each <code class="highlighter-rouge">2D</code> image into a <code class="highlighter-rouge">1D</code> array (i.e. a <code class="highlighter-rouge">28 x 28</code> values in an image is now a <code class="highlighter-rouge">1D</code> array of <code class="highlighter-rouge">784</code> numbers/features). We will do this in code as:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">train_dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">]</span>
+<span class="n">test_dataset</span>  <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">test_dataset</span><span class="p">]</span></code></pre></figure>
+
+<p>Finally, we do the training using 50, 1000, 5000 training samples and report the accuracy in the test set.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">n_samples</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]</span>
+    <span class="c"># Training</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">[:</span><span class="n">n_samples</span><span class="p">],</span> <span class="n">train_labels</span><span class="p">[:</span><span class="n">n_samples</span><span class="p">])</span>
+    <span class="c"># Testing</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">))</span></code></pre></figure>
 
 
   </div>
