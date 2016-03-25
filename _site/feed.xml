@@ -6,8 +6,8 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 25 Mar 2016 14:12:37 +1100</pubDate>
-    <lastBuildDate>Fri, 25 Mar 2016 14:12:37 +1100</lastBuildDate>
+    <pubDate>Fri, 25 Mar 2016 14:19:18 +1100</pubDate>
+    <lastBuildDate>Fri, 25 Mar 2016 14:19:18 +1100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -243,6 +243,10 @@ $$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{
     &lt;span class=&quot;n&quot;&gt;clf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;train_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;train_labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n_samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;# Testing&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_dataset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Using 50, 1000 and 5000 training we get a test accuracy of 63.8%, 74.9% and 84.7% respectively. This shows that more data we have, the better is the generalization.&lt;/p&gt;
+
+&lt;p&gt;In the Part 2 of this series, we will train a model on the same data set using a Feed Forward Neural Network using Tensorflow and we will see an increase in the test accuracy.&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 19 Mar 2016 11:00:00 +1100</pubDate>
