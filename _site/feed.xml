@@ -6,12 +6,12 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 Mar 2016 21:17:40 +1100</pubDate>
-    <lastBuildDate>Sun, 20 Mar 2016 21:17:40 +1100</lastBuildDate>
+    <pubDate>Fri, 25 Mar 2016 11:00:46 +1100</pubDate>
+    <lastBuildDate>Fri, 25 Mar 2016 11:00:46 +1100</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
-        <title>Feed forward Neural Networks using Tensorflow</title>
+        <title>Neural Networks using Tensorflow (Part 1: Logistic Classifier)</title>
         <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;These days we hear about Deep Learning everywhere from &lt;a href=&quot;https://hbr.org/2016/03/alphago-and-the-limits-of-machine-intuition&quot;&gt;AlphaGo &lt;/a&gt;defeating 9-dan ranked Lee Sedol in game of Go 4 out of 5 times to Google revealing &lt;a href=&quot;http://www.theverge.com/2016/2/25/11112594/google-new-deep-learning-image-location-planet&quot;&gt;PlaNet&lt;/a&gt; which can figure out the location of a photo just by looking at it. 
 The field of Deep Learning which first started in 80s continuing to 90s is now getting popularity because of the availability of powerful GPUs and huge amounts of Data. Some of the very popular Deep Learning frameworks are &lt;a href=&quot;http://caffe.berkeleyvision.org/&quot;&gt;Caffe&lt;/a&gt;, &lt;a href=&quot;https://www.tensorflow.org/&quot;&gt;Tensorflow&lt;/a&gt;, &lt;a href=&quot;http://torch.ch/&quot;&gt;Torch&lt;/a&gt; and &lt;a href=&quot;http://www.cntk.ai/&quot;&gt;CNTK&lt;/a&gt;. Each framework have their own advantages and disadvantages.&lt;/p&gt;
@@ -71,12 +71,12 @@ $$X \xrightarrow{WX+b} \begin{bmatrix} 4\\ 1\\ 0.1\\ \end{bmatrix} \xrightarrow{
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;b \leftarrow b-\alpha\Delta_b L&lt;/script&gt;
 
-&lt;p&gt;We repeat the above 2 steps until we reach the minimum of the loss function.&lt;/p&gt;
+&lt;p&gt;We repeat the above 2 steps until we reach the minimum loss.&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 19 Mar 2016 11:00:00 +1100</pubDate>
-        <link>/deep/learning/2016/03/19/Feed-Forward-Neural-Network-using-Tensorflow.html</link>
-        <guid isPermaLink="true">/deep/learning/2016/03/19/Feed-Forward-Neural-Network-using-Tensorflow.html</guid>
+        <link>/deep/learning/2016/03/19/Neural-Network-using-Tensorflow.html</link>
+        <guid isPermaLink="true">/deep/learning/2016/03/19/Neural-Network-using-Tensorflow.html</guid>
         
         
         <category>Deep</category>

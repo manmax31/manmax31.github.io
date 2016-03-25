@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Feed forward Neural Networks using Tensorflow"
+title:  "Neural Networks using Tensorflow (Part 1: Logistic Classifier)"
 date:   2016-03-19 00:00:00
 categories: Deep Learning
 ---
@@ -67,7 +67,7 @@ $$W \leftarrow W-\alpha\Delta_w L$$
 
 $$b \leftarrow b-\alpha\Delta_b L$$
 
-We repeat the above 2 steps until we reach the minimum of the loss function.
+We repeat the above 2 steps until we reach the minimum loss.
 
 
 
