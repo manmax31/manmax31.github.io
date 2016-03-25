@@ -256,6 +256,10 @@ for n_samples in [50, 1000, 5000]
     print(clf.score(test_dataset, test_labels))
 {% endhighlight %}
 
+Using 50, 1000 and 5000 training we get a test accuracy of 63.8%, 74.9% and 84.7% respectively. This shows that more data we have, the better is the generalisation.
+
+In the Part 2 of this series, we will train a model on the same data set using a Feed Forward Neural Network using Tensorflow and we will see an increase in the test accuracy.
+
 
 
 
